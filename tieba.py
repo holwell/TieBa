@@ -102,7 +102,8 @@ class Tieba(object):
 
 
 if __name__ == '__main__':
-    print('本程序完全开源，仅用作交流学习之用，切勿用作跨吧执法等非法用途，谢谢合作。。。')
+    print('本程序完全开源，仅用作学习交流，切勿用作跨吧执法、轨道炮等非法用途，谢谢合作。。。')
+    print('防止请求屏蔽，默认设置延迟5s，需要修改练手的朋友请自行fork，项目地址：https://github.com/holwell/TieBa')
     name = input('请输入需要统计的吧名：')
     tieba = Tieba(name)
     tieba.run()
