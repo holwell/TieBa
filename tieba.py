@@ -3,7 +3,8 @@ import json
 import time
 import requests
 from lxml import etree
-delay = 5  # 翻页延迟，防止屏蔽相应
+
+delay = 2  # 翻页延迟，防止屏蔽相应
 
 
 class Tieba(object):
@@ -41,14 +42,19 @@ class Tieba(object):
         return next_url
 
     def save_data(self, data):
+        def save_and_log(string):
+            print(string)
+            string += '\n'
+            with open('info.log', 'a', encoding='utf8') as f:
+                f.write(string)
 
-        print(datetime.datetime.now().strftime("========[%Y-%m-%d, %H:%M:%S]========"))
-        print('①帖子标题：{0}\n②帖子链接：{1}\n③回帖人员信息：'.format(data['title'], data['link']))
+        save_and_log(datetime.datetime.now().strftime("========[%Y-%m-%d, %H:%M:%S]========"))
+        save_and_log('①帖子标题：{0}\n②帖子链接：{1}\n③回帖人员信息：'.format(data['title'], data['link']))
         for user in data['user_info_list']:
-            print('      昵称：{0:_<14}贴吧名：{1:_<14}贴吧等级：{2:_<9}唯一用户id:{3:}'.format(user['user_nickname'],
-                                                                                user['user_name'],
-                                                                                user['level'],
-                                                                                user['user_id']))
+            save_and_log('      昵称：{0:_<14}贴吧名：{1:_<14}贴吧等级：{2:_<9}唯一用户id:{3:}'.format(user['user_nickname'],
+                                                                                       user['user_name'],
+                                                                                       user['level'],
+                                                                                       user['user_id']))
 
     def get_user_info(self, url):
         next_url = url
@@ -102,8 +108,13 @@ class Tieba(object):
 
 
 if __name__ == '__main__':
-    print('本程序完全开源，仅用作学习交流，切勿用作跨吧执法、轨道炮等非法用途，谢谢合作。。。')
-    print('防止请求屏蔽，默认设置延迟5s，需要修改练手的朋友请自行fork，项目地址：https://github.com/holwell/TieBa')
+    print('本程序完全开源，仅用作学习交流，切勿用作跨吧执法、轨道炮等非法用途，谢谢合作。。。\n')
+    print('防止请求屏蔽，默认设置翻页延迟2s，需要修改练手的朋友请自行fork，项目地址：https://github.com/holwell/TieBa\n')
     name = input('请输入需要统计的吧名：')
-    tieba = Tieba(name)
-    tieba.run()
+    try:
+        tieba = Tieba(name)
+        tieba.run()
+    except:
+        print('访问频繁或出现解析错误')
+    finally:
+        input('程序已结束')
